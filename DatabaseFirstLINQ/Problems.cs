@@ -336,13 +336,14 @@ namespace DatabaseFirstLINQ
             // Write a query that finds the total of every users shopping cart products using LINQ.
             // Display the total of each users shopping cart as well as the total of the toals to the console.
             var users = _context.Users.ToList();
-            var shoppingCartTotal = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Include(ut => ut.Quantity).Where(sc => sc.User.Email == "afton@gmail.com").Select(sc => sc.Product.Price).Sum();
-            decimal total = 0;
+            //var shoppingCartTotal = _context.ShoppingCarts.Include(sc => sc.Product).Include(sc => sc.User).Include(ut => ut.Quantity).Where(sc => sc.User.Email == "afton@gmail.com").Select(sc => sc.Product.Price * sc.Quantity).Sum();
+            decimal? total = 0;
             foreach(User user in users)
             {
-                decimal userTotals = _context.ShoppingCarts.Include(ut => ut.Product).Include(ut => ut.User).Include(ut => ut.Quantity).Where(ut => ut.User.Email == user.Email).Select(ut => ut.Product.Price).Sum();
-                total += userTotals;
-                Console.WriteLine($"{user.Email}: ${userTotals}");
+                decimal userTotals = _context.ShoppingCarts.Include(ut => ut.Product).Include(ut => ut.User).Where(ut => ut.User.Email == user.Email).Select(ut => ut.Product.Price).Sum();
+                var shoppingCartQuantity = _context.ShoppingCarts.Include(sh => sh.User).Where(sh => sh.User.Email == user.Email).Select(sh => sh.Quantity).Sum();
+                total += userTotals * shoppingCartQuantity ;
+                Console.WriteLine($"{user.Email}: ${(userTotals) *(shoppingCartQuantity)}");
             }
             Console.WriteLine("total:" + total);
 

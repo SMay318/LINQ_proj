@@ -28,7 +28,7 @@ namespace DatabaseFirstLINQ
             //ProblemEleven();
             //ProblemTwelve();
             //ProblemThirteen();
-            ProblemFourteen();
+            //ProblemFourteen();
             ProblemFifteen();
             //ProblemSixteen();
             //ProblemSeventeen();
@@ -214,7 +214,7 @@ namespace DatabaseFirstLINQ
         private void ProblemFourteen()
         {
             // Add the product you create to the user we created in the ShoppingCart junction table using LINQ.
-            var userId = _context.Users.Where(u => u.Email == "david@gmail.com").Select(u => u.Id).SingleOrDefault();
+            var userId = _context.Users.Where(u => u.Email == "mike@gmail.com").Select(u => u.Id).SingleOrDefault();
             var productId = _context.Products.Where(p => p.Name == "Red Ryder BB-Gun").Select(p => p.Id).SingleOrDefault();
             
 
@@ -243,7 +243,10 @@ namespace DatabaseFirstLINQ
         private void ProblemSixteen()
         {
             // Update the price of the product you created to something different using LINQ.
-
+            var product = _context.Products.Where(p => p.Name == "Red Ryder BB-Gun").SingleOrDefault();
+            product.Price = 25;
+            _context.Products.Update(product);
+            _context.SaveChanges();
         }
 
         private void ProblemSeventeen()
